@@ -1,0 +1,369 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bussproofs}
+\usepackage{amsthm}
+\usepackage{forest} %Arboles de derivacion
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{bussproofs}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{enumitem}[shortlabels]
+
+\title{Evaluación semanal 3}
+\author{del Valle Vera Nancy Elena\\ Juárez Cruz Joshua \\ Sánchez Victoria Leslie Paola}
+\date{Agosto 2024}
+
+\begin{document}
+
+\maketitle
+
+\section*{Ejercicio 1}
+
+\subsection*{$(- \hspace{0.3cm} (+ \hspace{0.3cm} 20  \hspace{0.3cm}  3) (-  \hspace{0.3cm}  -18 \hspace{0.3cm}  (+  \hspace{0.3cm}  50  \hspace{0.3cm}  20)))$}
+
+\begin{enumerate}
+    \item \textbf{Sintaxix abstracta}
+    \begin{center}
+    \begin{forest}
+      [Sub
+        [Add
+            [Num
+                [20]]
+            [Num
+                [3]]]
+        [Sub
+          [Num
+            [-18]]
+          [Add
+            [Num
+                [50]]
+            [Num
+                [20]]]
+          ]
+        ]
+    \end{forest}
+    \end{center}\
+
+    \item \textbf{Semántica natural}
+    \begin{prooftree}
+        \AxiomC{N(20) $\Rightarrow$ N(20)}
+                    \AxiomC{N(3) $\Rightarrow$ N(3)}
+            \BinaryInfC{Add(N(20), N(3)) $\Rightarrow$ N(23)}
+                                    \AxiomC{N(-18) $\Rightarrow$ N(-18)}
+                                            \AxiomC{N(50) $\Rightarrow$ N(50)}
+                                                        \AxiomC{N(20) $\Rightarrow$ N(20)}
+                                                \BinaryInfC{Add(N(50), N(20)) $\Rightarrow$ N(70)}
+                                        \BinaryInfC{Sub(N (-18), Add(N(50), N(20)) $\Rightarrow$ N(70))}
+                        \BinaryInfC{Sub(Add(N(20), N(3)), Sub(N(-18), Add(N(50), N(20)))) $\Rightarrow$ N(111)}
+    \end{prooftree}
+
+    \item \textbf{Semántica estructural}\\
+$Sub(Add(Num(20),Num(3)), Sub(Num(-18), Add(Num(50), Num(20))))$\\
+$\rightarrow Sub(Num(23),Sub(Num(-18),Add(Num(50),Num(20))))$\\
+$\rightarrow Sub(Num(23),Sub(Num(-18),Num(70)))$\\
+$\rightarrow Sub(Num(23),Num(-88))$\\
+$\rightarrow Num(111)$
+
+\end{enumerate}
+
+\newpage
+\subsection*{$(not (+  \hspace{0.3cm}1 (-  \hspace{0.3cm} 3 (+  \hspace{0.3cm} -8  \hspace{0.3cm} 1) ) ) )$}
+
+\begin{enumerate}
+    \item \textbf{Sintaxix abstracta}
+    \begin{center}
+    \begin{forest}
+      [Not
+        [Add
+            [Num
+                [1]]
+            [Sub
+                [Num
+                    [3]]
+                [Add
+                    [Num
+                        [-8]]
+                    [Num
+                        [1]]
+                ]
+            ]
+        ]
+    ]
+    \end{forest}
+    \end{center}\
+
+    \item \textbf{Semántica natural}
+\begin{prooftree}
+     \AxiomC{$Num(1)\Rightarrow Num(1)$}
+    \AxiomC{$Num(3)\Rightarrow Num(3)$}
+    \AxiomC{$Num(-8) \Rightarrow Num(-8)$}
+    \AxiomC{$Num(1) \Rightarrow Num(1)$}
+    \BinaryInfC{$Add(Num(-8),Num(1))\Rightarrow Num(-7)$}
+    \BinaryInfC{$Sub(Num(3),Add(Num(-8),Num(1)))\Rightarrow Num(10)$}
+   \BinaryInfC{$Add(Num(1),Sub(Num(3),Add(Num(-8),Num(1))))\Rightarrow Num(11)$}
+   \UnaryInfC{$Not(Add(Num(1),Sub(Num(3),Add(Num(-8),Num(1)))))\Rightarrow Boolean(false)$}
+\end{prooftree}
+
+    \item \textbf{Semántica estructural}\\
+$Not(Add(Num(1),Sub(Num(3),Add(Num(-8),Num(1)))))$\\
+$\rightarrow Not(Add(Num(1),Sub(Num(3)Num(-7))))$\\
+$\rightarrow Not(Add((Num(1),Num(10))))$\\
+$\rightarrow Not(11)$ \\
+$\rightarrow Boolean(false)$\\
+\end{enumerate}
+
+
+
+\subsection*{$(not (not (+  \hspace{0.3cm} 3  \hspace{0.3cm} 5)))$}
+
+\begin{enumerate}
+    \item \textbf{Sintaxix abstracta}
+    \begin{center}
+    \begin{forest}
+        [Not
+            [Not
+                [Add
+                    [Num
+                        [3]
+                    ]
+                    [Num
+                        [5]
+                    ]
+                ]
+            ]
+        ]
+    \end{forest}
+    \end{center}
+
+    \item \textbf{Semántica natural}
+\begin{prooftree}
+   \AxiomC{$Num(3) \Rightarrow Num(3)$}
+   \AxiomC{$Num(5) \Rightarrow Num(5)$}
+   \BinaryInfC{$Add(Num(3),Num(5)) \Rightarrow Num(8)$}
+  \UnaryInfC{$Not(Add(Num(3),Num(5))) \Rightarrow Boolean(false)$}
+  \UnaryInfC{$Not(Not(Add(Num(3),Num(5)))) \Rightarrow Boolean(true)$}
+\end{prooftree}
+
+    \item \textbf{Semántica estructural}\\
+$Not(Not(Add(Num(3),Num(5)))$\\
+$\rightarrow Not(Not(Num(8)))$\\
+$\rightarrow Not(Boolean(false))$\\
+$\rightarrow Boolean(true) $\\
+   
+\end{enumerate}
+
+
+
+\section*{Ejercicio 2}
+
+\subsection*{Gramática libre de contexto modificada}
+\begin{lstlisting}
+                    <S> ::= <E>
+                    <E> ::= <Int> | <Bool> | <Float>
+                           | (+ <E> <E>) | (- <E> <E>)
+                           | (* <E> <E>) | (/ <E> <E>)
+                           | (Not <E>) | (add1 <E>) | (sub1 <E>)
+                           | (sqrt <E>)
+                    <Int> ::= <N> | -<M>
+                    <Bool> ::= #t | #f
+                    <Float> ::= <Int>.<N>
+                    <D> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+                    <N> ::= 0 | <D>{<N>}
+                    <M> ::= <D>{<N>}
+\end{lstlisting}
+
+\subsection*{Reglas de sintaxis abstracta}
+\textbf{Números}
+\begin{prooftree}
+    \AxiomC{$n\in \mathbb{R}$}
+    \UnaryInfC{Num($n$) ASA}
+\end{prooftree}
+
+\textbf{Multiplicación}
+\begin{prooftree}
+    \AxiomC{$i$ ASA}
+    \AxiomC{$d$ ASA}
+    \BinaryInfC{$Mult(i,d)$ ASA}
+\end{prooftree}
+
+\textbf{División}
+\begin{prooftree}
+    \AxiomC{$i$ ASA}
+    \AxiomC{$d$ ASA}
+    \BinaryInfC{$Div(i,d)$ ASA}
+\end{prooftree}
+
+\textbf{Sumar uno}
+\begin{prooftree}
+    \AxiomC{$i$ ASA}
+    \UnaryInfC{$Add1(i)$ ASA}
+\end{prooftree}
+
+\textbf{Restar uno}
+\begin{prooftree}
+    \AxiomC{$i$ ASA}
+    \UnaryInfC{$Sub1(i)$ ASA}
+\end{prooftree}
+
+\textbf{Raíz cuadrada}
+\begin{prooftree}
+    \AxiomC{$i$ ASA}
+    \UnaryInfC{$Sqrt(i)$ ASA}
+\end{prooftree}
+
+\subsection*{Reglas de semántica natural y estructural}
+\subsubsection*{Natural}
+
+\hspace{1cm} \textbf{Multiplicación}
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \AxiomC{d $\Rightarrow$ Num($n_2$)}
+    \BinaryInfC{Mult(i,d) $\Rightarrow$ Num($n_1*\,n_2$)}
+\end{prooftree}
+
+\hspace{1cm}  \textbf{División}
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \AxiomC{d $\Rightarrow$ Num(0)}
+    \BinaryInfC{Div(i,d) $\Rightarrow$ 'error: División entre cero'}
+\end{prooftree}
+
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \AxiomC{d $\Rightarrow$ Num($n_2$)}
+    \BinaryInfC{Div(i,d) $\Rightarrow$ Num($n_1/\, n_2$)}
+\end{prooftree}
+
+\hspace{1cm} \textbf{Sumar uno}
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \UnaryInfC{Add1(i) $\Rightarrow$ Num($n_1+1$)}
+\end{prooftree}
+
+\hspace{1cm} \textbf{Restar uno}
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \UnaryInfC{Sub1(i,d) $\Rightarrow$ Num($n_1 - 1$)}
+\end{prooftree}
+
+\hspace{1cm}  \textbf{Raíz Cuadrada}
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n$)}
+    \AxiomC{$n \in \mathbb{R}^-$}
+    \BinaryInfC{Sqrt(i) $\Rightarrow$ 'error: Raíz negativa'}
+\end{prooftree}
+
+\begin{prooftree}
+    \AxiomC{i $\Rightarrow$ Num($n_1$)}
+    \UnaryInfC{Sqrt(i) $\Rightarrow$ Num($\sqrt{n_1}$)}
+\end{prooftree}
+
+
+\subsubsection*{Estructural}
+\hspace{1cm} \textbf{Multiplicación}
+\begin{itemize}
+    \item  Caso 1
+\begin{prooftree}
+    \AxiomC{$i \rightarrow i'$}
+    \UnaryInfC{$Mult(i,d) \rightarrow Mult(i',d)$}
+\end{prooftree}
+    \item  Caso 2
+\begin{prooftree}
+    \AxiomC{$d\rightarrow d'$}
+    \UnaryInfC{$Mult(Num(n),d) \rightarrow Mult(Num(n),d')$}
+\end{prooftree}
+    \item Caso 3
+    \begin{prooftree}
+    \AxiomC{ }
+    \UnaryInfC{$Mult(Num(n_1),Num(n_2)) \rightarrow Num(n_1 * n_2)$}
+    \end{prooftree}
+\end{itemize}
+
+\hspace{1cm} \textbf{División} 
+\begin{itemize}
+    \item  Caso 1
+    \begin{prooftree}
+        \AxiomC{i $\rightarrow$ i'}
+        \UnaryInfC{Div(i,d) $\rightarrow$ Div(i',d)}
+    \end{prooftree}
+
+    \item  Caso 2
+    \begin{prooftree}
+        \AxiomC{d $\rightarrow$ d'}
+        \UnaryInfC{Div(Num($n_1$),d) $\rightarrow$ Div(Num($n_1$),d')}
+    \end{prooftree}
+
+    \item Caso 3
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{Div(Num(n), Num(0)) $\Rightarrow$ 'error: División entre cero'}
+    \end{prooftree}
+
+    \item Caso 4
+    \begin{prooftree}
+        \AxiomC{$n_2 \in \mathbb{R}-\{0\}$}
+        \UnaryInfC{Div(Num($n_1$), Num($n_2$)) $\rightarrow$ Num($n_1/n_2$)}
+    \end{prooftree}
+\end{itemize}
+
+\hspace{1cm} \textbf{Sumar uno}
+\begin{itemize}
+    \item Caso 1
+    \begin{prooftree}
+        \AxiomC{$i \rightarrow i'$}
+        \UnaryInfC{$Add1(i) \rightarrow Add1(i') $}
+    \end{prooftree}
+    \item Caso 2
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{$Add1(Num(n_1)) \rightarrow Num(n_{1}+1) $}
+    \end{prooftree}
+    
+\end{itemize}
+
+
+\hspace{1cm} \textbf{Restar uno}
+\begin{itemize}
+    \item Caso 1
+    \begin{prooftree}
+        \AxiomC{$i \rightarrow i'$}
+        \UnaryInfC{$Sub1(i) \rightarrow Sub1(i') $}
+    \end{prooftree}
+
+    \item Caso 2
+    \begin{prooftree}
+        \AxiomC{}
+        \UnaryInfC{$Sub1(Num(n_1)) \rightarrow Num(n_{1}-1) $}
+    \end{prooftree}
+\end{itemize}
+
+
+\hspace{1cm} \textbf{Raíz cuadrada}
+\begin{itemize}
+    \item Caso 1
+     \begin{prooftree}
+        \AxiomC{$i \rightarrow i'$}
+        \UnaryInfC{$Sqrt(i) \rightarrow Sqrt(i') $}
+    \end{prooftree}
+    
+    \item caso 2
+    \begin{prooftree}
+        \AxiomC{$n_1 \in \mathbb{R}^-$}
+        \UnaryInfC{$Sqrt(Num(n_1)) \rightarrow$ 'error: Raíz negativa'}
+    \end{prooftree}
+    
+    \item Caso 3
+    \begin{prooftree}
+        \AxiomC{$n_1 \in \mathbb{R}^+ \cup \{0\}$}
+        \UnaryInfC{$Sqrt(Num(n_1)) \rightarrow Num(\sqrt{n_1}) $}
+    \end{prooftree}
+\end{itemize}
+
+\end{document}
